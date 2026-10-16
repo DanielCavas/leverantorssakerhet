@@ -170,6 +170,55 @@
       background: var(--border);
     }
 
+    /* ── Instructions ── */
+    .instructions {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      padding: 24px 28px;
+      margin-bottom: 48px;
+    }
+    .instructions-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 14px;
+    }
+    .instructions ol {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+    .instructions li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .instructions li strong {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
     /* ── Level selection ── */
     .level-grid {
       display: grid;
@@ -764,6 +813,7 @@
     @media (max-width: 680px) {
       .hero { padding: 120px 24px 60px; }
       .hero h1 { font-size: 32px; }
+      .instructions { padding: 20px; }
       .content { padding: 0 24px 80px; }
       .nav { padding: 0 24px; }
       .nav-links { display: none; }
@@ -799,6 +849,20 @@
   <div class="content">
 
     <div id="assess">
+      <div class="instructions">
+        <div class="instructions-title">Så här gör du</div>
+        <ol>
+          <li>
+            <span class="step-num">1</span>
+            <span><strong>Välj informationsklass (K1–K4).</strong> Utgå från den mest känsliga information som leverantören eller produkten kommer att hantera.</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span><strong>Klistra in en länk till produkten eller leverantören</strong> i rutan under ”02 Leverantör” och klicka på <strong>Analysera</strong>.</span>
+          </li>
+        </ol>
+      </div>
+
       <div class="section-label">01 &nbsp; Informationsklass</div>
       <div class="level-grid" id="levelGrid"></div>
 
@@ -806,7 +870,7 @@
       <div class="url-section">
         <div class="url-row">
           <input type="url" class="url-input" id="urlInput"
-                 placeholder="https://leverantor.example.com" />
+                 placeholder="Klistra in länk till produkt eller leverantör, t.ex. https://leverantor.se" />
           <button class="scan-btn" id="scanBtn" disabled>Analysera</button>
         </div>
       </div>
