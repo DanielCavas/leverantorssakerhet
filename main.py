@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from classification import CLASSIFICATION_LEVELS, REQUIREMENTS, get_cumulative_requirements
+from classification import CLASSIFICATION_LEVELS, get_cumulative_requirements
 from report import build_report, report_filename
 from scanner import scan_vendor
 

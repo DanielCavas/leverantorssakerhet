@@ -127,7 +127,7 @@ def _draw_page(canvas, doc, *, first: bool, vendor: str, level_text: str, date_t
 
         canvas.setFillColor(BLUE_LIGHT)
         canvas.setFont("Noto-Bold", 7.5)
-        canvas.drawString(MARGIN, PAGE_H - 14 * mm, "RAPPORT  ·  NIS2  ·  DORA  ·  K1–K4")
+        canvas.drawString(MARGIN, PAGE_H - 14 * mm, "RAPPORT  ·  NIS2  ·  DORA  ·  ISO 27001  ·  K1–K4")
         canvas.setFillColor(colors.white)
         canvas.setFont("Noto-Bold", 21)
         canvas.drawString(MARGIN, PAGE_H - 25 * mm, "Leverantörssäkerhetsbedömning")
@@ -153,7 +153,7 @@ def _draw_page(canvas, doc, *, first: bool, vendor: str, level_text: str, date_t
     canvas.setFillColor(MUTED)
     canvas.setFont("Noto", 7.5)
     canvas.drawString(MARGIN, 9.5 * mm,
-                      "Automatiserad bedömning baserad på NIS2 (EU 2022/2555) och DORA (EU 2022/2554)")
+                      "Automatiserad bedömning baserad på NIS2 (EU 2022/2555), DORA (EU 2022/2554) och ISO/IEC 27001:2022")
     canvas.drawRightString(PAGE_W - MARGIN, 9.5 * mm, f"Sida {doc.page}")
     canvas.restoreState()
 

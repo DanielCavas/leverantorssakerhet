@@ -10,17 +10,18 @@ Sidan ligger på Renders gratisplan och kan behöva upp till en minut för att s
 
 | Klass | Beskrivning | Antal krav |
 |-------|-------------|-----------:|
-| K1 | Offentlig / Ej känslig | 3 |
-| K2 | Intern / Begränsad | 10 |
-| K3 | Konfidentiell | 23 |
-| K4 | Strikt konfidentiell | 33 |
+| K1 | Offentlig / Ej känslig | 4 |
+| K2 | Intern / Begränsad | 11 |
+| K3 | Konfidentiell | 18 |
+| K4 | Strikt konfidentiell | 20 |
 
-Klasserna bygger på varandra: K3 innehåller även kraven för K1 och K2.
+Varje kravområde, till exempel kryptering eller incidenthantering, bedöms en gång. En högre informationsklass skärper kravet inom samma område istället för att lägga till ett nytt, överlappande krav. Varje område har egna sökord, så samma underlag räknas aldrig för flera krav.
 
 ## Regelverk
 
 - NIS2 (EU 2022/2555)
 - DORA (EU 2022/2554)
+- ISO/IEC 27001:2022, inklusive åtgärderna i bilaga A
 - GDPR och PCI DSS där det är relevant
 
 ## Om bedömningen
