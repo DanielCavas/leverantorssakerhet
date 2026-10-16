@@ -405,6 +405,38 @@
     .stat-box.partial .stat-value { color: var(--yellow); }
     .stat-box.not-met .stat-value { color: var(--red); }
 
+    /* ── Report download ── */
+    .report-actions {
+      display: flex;
+      justify-content: center;
+      margin: -16px 0 48px;
+    }
+    .report-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue);
+      color: #ffffff;
+      border: 1px solid var(--blue);
+      padding: 14px 32px;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .report-btn:hover:not(:disabled) {
+      background: var(--blue-deep);
+      border-color: var(--blue-deep);
+    }
+    .report-btn:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+    .report-btn svg { width: 14px; height: 14px; }
+
     /* Pages scanned */
     .pages-info {
       margin-bottom: 40px;
@@ -790,6 +822,15 @@
 
       <div class="score-section" id="scoreBar"></div>
 
+      <div class="report-actions">
+        <button class="report-btn" id="reportBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 3v12m0 0l-5-5m5 5l5-5M4 19h16" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span id="reportBtnText">Ladda ner rapport (PDF)</span>
+        </button>
+      </div>
+
       <details class="pages-info" id="pagesInfo">
         <summary>Analyserade sidor</summary>
         <ul id="pagesList"></ul>
@@ -831,8 +872,12 @@
     const findingsList = document.getElementById('findingsList');
     const filterBar = document.getElementById('filterBar');
 
+    const reportBtn = document.getElementById('reportBtn');
+    const reportBtnText = document.getElementById('reportBtnText');
+
     let selectedLevel = null;
     let currentFindings = [];
+    let lastResult = null;
 
     async function init() {
       const resp = await fetch('/api/levels');
@@ -892,7 +937,7 @@
       } catch (err) {
         clearInterval(interval);
         loading.style.display = 'none';
-        alert('Kunde inte genomföra analysen. Kontrollera URL:en och försök igen.');
+        alert('Kunde inte genomföra analysen. Kontrollera webbadressen och försök igen.');
       }
       scanBtn.disabled = false;
     });
@@ -901,7 +946,35 @@
       if (e.key === 'Enter' && !scanBtn.disabled) scanBtn.click();
     });
 
+    reportBtn.addEventListener('click', async () => {
+      if (!lastResult) return;
+      reportBtn.disabled = true;
+      reportBtnText.textContent = 'Skapar rapport\u2026';
+      try {
+        const resp = await fetch('/api/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(lastResult),
+        });
+        if (!resp.ok) throw new Error(resp.status);
+        const blob = await resp.blob();
+        const match = /filename="([^"]+)"/.exec(resp.headers.get('Content-Disposition') || '');
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = match ? match[1] : 'sakerhetsbedomning.pdf';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 10000);
+      } catch (err) {
+        alert('Kunde inte skapa rapporten. Försök igen.');
+      }
+      reportBtn.disabled = false;
+      reportBtnText.textContent = 'Ladda ner rapport (PDF)';
+    });
+
     function renderResults(data) {
+      lastResult = data;
       currentFindings = data.findings;
       const scoreTone = data.score_percent >= 70 ? 'high' : data.score_percent >= 40 ? 'medium' : 'low';
       const hostname = (() => { try { return new URL(data.vendor_url).hostname; } catch(e) { return data.vendor_url; } })();
@@ -914,7 +987,7 @@
         </div>
         <div class="score-summary">${data.summary}</div>
         <div class="score-detail">
-          ${data.pages_scanned.length} sidor analyserade hos ${hostname}
+          ${data.pages_scanned.length} ${data.pages_scanned.length === 1 ? 'sida analyserad' : 'sidor analyserade'} hos ${hostname}
           ${reviewCount > 0 ? ` &middot; ${reviewScanned} recensioner/omnämnanden granskade` : ''}
         </div>
         <div class="stats-row">

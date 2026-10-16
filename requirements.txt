@@ -4,3 +4,5 @@ httpx
 beautifulsoup4
 lxml
 jinja2
+reportlab
+tzdata
